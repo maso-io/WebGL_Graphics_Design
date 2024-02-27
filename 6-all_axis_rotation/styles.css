@@ -1,0 +1,14 @@
+#content_wrapper {
+	position: relative;
+	width: calc(100% - 2rem);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+#canva {
+	max-width: 80%;
+	border: 5px solid red;
+}
+p {
+	color: red;
+}
