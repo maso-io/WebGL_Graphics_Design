@@ -88,7 +88,7 @@ function draw()
 	]);
 	let rot_z = new Float32Array([
 		cos(C), -sin(C), 0, 0,
-		sin(C), sin(C), 0, 0,
+		sin(C), cos(C), 0, 0,
 		0, 0, 1, 0,
 		0, 0, 0, 1,
 	]);
@@ -114,7 +114,7 @@ function draw()
 			p_info.axis[i],
 			webgl.FALSE,
 			axis[i]
-		);
+			);
 		} else {
 			webgl.uniformMatrix4fv(
 				p_info.axis[i],
