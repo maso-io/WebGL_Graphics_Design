@@ -6,7 +6,8 @@ The programs written will be computed directly on the graphics processing unit. 
 The vertex and fragment shaders that constitute the graphics program are written in a OpenGL Shader code.
 
 Repo outline:<br>
-1: 2D Graphics, Shaders, movements
-2: 3D Graphics with matrices
-3: Matrices, projection, multiple objects
-4: Planning, documenting and the above
+
+1. 2D Graphics, Shaders, movements
+2. 3D Graphics with matrices
+3. Matrices, projection, multiple objects
+4. Planning, documenting and the above
