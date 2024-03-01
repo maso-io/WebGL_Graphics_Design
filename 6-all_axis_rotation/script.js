@@ -76,7 +76,7 @@ function draw()
 	});
 	let rot_x = new Float32Array([
 		1, 0, 0, 0,
-		0, cos(A), sin(A), 0,
+		0, cos(A), -sin(A), 0,
 		0, sin(A), cos(A), 0,
 		0, 0, 0, 1,
 	]);

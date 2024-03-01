@@ -98,7 +98,7 @@ function draw(){
     // set rotation matrices
     let rot_x = new Float32Array([
 		1, 0, 0, 0,
-		0, cos(A), sin(A), 0,
+		0, cos(A), -sin(A), 0,
 		0, sin(A), cos(A), 0,
 		0, 0, 0, 1,
 	]);
@@ -171,6 +171,7 @@ if (!webgl)
 {
     throw new Error(`WebGL not supported`);
 }
+webgl.enable(webgl.DEPTH_TEST);
 webgl.clearColor(0.20, 0.20, 0.20, 1.0);
 webgl.clear(webgl.COLOR_BUFFER_BIT);
 
@@ -245,5 +246,5 @@ webgl.vertexAttribPointer(
     6 * 4,
     3 * 4,
 );
-webgl.enable(webgl.DEPTH_TEST);
+
 draw()
