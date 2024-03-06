@@ -1,37 +1,10 @@
-// pos.x * cos(angle)- pos.z * sin(angle),
-// pos.y,
-// pos.z * cos(angle) + pos.x * sin(angle),
-// 1.0
+import { fsSource, vsSource, vertices, idMatrix, colors } from "./source.js";
 //Define constants
 const PI = Math.PI;
 const cos = Math.cos;
 const sin = Math.sin;
 const rand = Math.random;
 
-//Define source
-const vsSource = `
-precision mediump float;
-
-attribute vec3 pos;
-attribute vec3 color;
-
-uniform mat4 rot_x;
-uniform mat4 rot_y;
-uniform mat4 rot_z;
-
-varying vec3 fragColor;
-void main(){
-    fragColor = color;
-    gl_Position = rot_x * rot_y * rot_z * vec4(pos, 1.0);
-    gl_PointSize = 15.0;
-}`
-const fsSource = `
-precision mediump float;
-
-varying vec3 fragColor;
-void main(){
-    gl_FragColor = vec4(fragColor, 1.0);
-}`
 // Define methods
 function initShader(fsSource, vsSource){
     const vShader = loadShader(webgl.VERTEX_SHADER, vsSource);
@@ -60,12 +33,12 @@ function loadShader(type, source){
     }
     return shader;
 }
-function initBuffer(){
+function initBuffer(pts){
     const buffer = webgl.createBuffer();
     webgl.bindBuffer(webgl.ARRAY_BUFFER, buffer);
-    webgl.bufferData(webgl.ARRAY_BUFFER, new Float32Array(vertices), webgl.STATIC_DRAW);
+    webgl.bufferData(webgl.ARRAY_BUFFER, new Float32Array(pts), webgl.STATIC_DRAW);
 
-    return;
+    return (buffer);
 }
 // handle buttons
 const buttons = document.querySelectorAll(`button`);
@@ -83,7 +56,13 @@ buttons.forEach((btn) => {
         console.log(state)
     });
 });
-console.log(buttons);
+const rangeInput = document.querySelector(`#scaler`);
+rangeInput.addEventListener("input", () => {
+    // get and update scale-factor value
+    let sf = rangeInput.value; 
+    webgl.uniform3f(p_info.scaler, sf, sf, sf);
+});
+
 const dA = PI / 180;
 const dB = PI / 180;
 const dC = PI / 180;
@@ -114,15 +93,9 @@ function draw(){
 		0, 0, 1, 0,
 		0, 0, 0, 1,
     ]);
-    // set the "1" matrix
-	let idMatrix = new Float32Array([
-		1, 0, 0, 0,
-		0, 1, 0, 0,
-		0, 0, 1, 0,
-		0, 0, 0, 1,
-	]);
+
     let state = [];
-    const axis = [rot_x, rot_y, rot_z, idMatrix];
+    const axis = [rot_x, rot_y, rot_z];
     buttons.forEach((btn) => {
         state.push(
             parseInt(btn.getAttribute("data-state"))
@@ -148,18 +121,17 @@ function draw(){
             webgl.uniformMatrix4fv(
                 p_info.axis[i],
                 webgl.FALSE,
-                axis[3]
+                idMatrix
             );
         };
         i++;
     });
+    i = 0;
+    for (let i = 0; i < 6; i++)
+    {
+         webgl.drawArrays(webgl.TRIANGLE_FAN, i * 4, 4);
+    };
     
-    webgl.drawArrays(webgl.TRIANGLE_FAN, 0, 4);
-    webgl.drawArrays(webgl.TRIANGLE_FAN, 4, 4);
-    webgl.drawArrays(webgl.TRIANGLE_FAN, 8, 4);
-    webgl.drawArrays(webgl.TRIANGLE_FAN, 12, 4);
-    webgl.drawArrays(webgl.TRIANGLE_FAN, 16, 4);
-    webgl.drawArrays(webgl.TRIANGLE_FAN, 20, 4);
     requestAnimationFrame(draw);
 }
 //
@@ -176,44 +148,9 @@ webgl.clearColor(0.20, 0.20, 0.20, 1.0);
 webgl.clear(webgl.COLOR_BUFFER_BIT);
 
 const program = initShader(fsSource, vsSource);
-const vertices = [
-    // x , y , z         R, G, B
+const verticesBuffer = initBuffer(vertices);
+const colorsBuffer = initBuffer(colors);
 
-    // XY PLANE: front square
-    -0.25, 0.25, 0.25,   1.0, 1.0, 0.0,
-    -0.25, -0.25, 0.25,  1.0, 1.0, 0.0,
-    0.25, -0.25, 0.25,   1.0, 1.0, 0.0,
-    0.25, 0.25, 0.25,    1.0, 1.0, 0.0,
-    // XY PLANE: back square
-    -0.25, 0.25, -0.25,  0.0, 1.0, 0.8,
-    -0.25, -0.25, -0.25, 0.0, 1.0, 0.8,
-    0.25, -0.25, -0.25,  0.0, 1.0, 0.8,
-    0.25, 0.25, -0.25,   0.0, 1.0, 0.8,
-
-    // YZ PLANE: right square
-    0.25, 0.25, -0.25,  0.5, 1.0, 0.0,
-    0.25, -0.25, -0.25, 0.5, 1.0, 0.0,
-    0.25, -0.25, 0.25,  0.5, 1.0, 0.0,
-    0.25, 0.25, 0.25,   0.5, 1.0, 0.0,
-    // YZ PLANE: left square
-    -0.25, 0.25, -0.25,  0.85, 0.4, 0.2,
-    -0.25, -0.25, -0.25, 0.85, 0.4, 0.2,
-    -0.25, -0.25, 0.25,  0.85, 0.4, 0.2,
-    -0.25, 0.25, 0.25,   0.85, 0.4, 0.2,
-
-    // XZ PLANE: down
-    -0.25, -0.25, 0.25,  0.6, 0.0, 1.0,
-    -0.25, -0.25, -0.25, 0.6, 0.0, 1.0,
-    0.25, -0.25, -0.25,  0.6, 0.0, 1.0,
-    0.25, -0.25, 0.25,   0.6, 0.0, 1.0,
-    // XZ PLANE: up
-    -0.25, 0.25, 0.25,   1.0, 0.0, 0.0,
-    -0.25, 0.25, -0.25,  1.0, 0.0, 0.0,
-    0.25, 0.25, -0.25,   1.0, 0.0, 0.0,
-    0.25, 0.25, 0.25,    1.0, 0.0, 0.0,
-];
-
-const buffer = initBuffer();
 webgl.useProgram(program);
 
 // compile program info
@@ -225,26 +162,30 @@ const p_info = {
         webgl.getUniformLocation(program, `rot_y`),
         webgl.getUniformLocation(program, `rot_z`),
     ],
+    scaler: webgl.getUniformLocation(program, `scale`),
 }
 
 webgl.enableVertexAttribArray(p_info.pos);
+webgl.bindBuffer(webgl.ARRAY_BUFFER, verticesBuffer);
 webgl.vertexAttribPointer(
     p_info.pos,
     3,
     webgl.FLOAT,
     webgl.FALSE,
-    6 * Float32Array.BYTES_PER_ELEMENT,
+    3 * Float32Array.BYTES_PER_ELEMENT,
     0 * Float32Array.BYTES_PER_ELEMENT
 )
-
+webgl.bindBuffer(webgl.ARRAY_BUFFER, colorsBuffer);
 webgl.enableVertexAttribArray(p_info.color);
 webgl.vertexAttribPointer(
     p_info.color,
     3,
     webgl.FLOAT,
     webgl.FALSE,
-    6 * 4,
-    3 * 4,
+    0 * 4,
+    0 * 4,
 );
 
-draw()
+// set initial scale-factor
+webgl.uniform3f(p_info.scaler, 1, 1, 1);
+draw();

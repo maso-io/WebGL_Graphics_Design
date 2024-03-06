@@ -1,8 +1,35 @@
-#canva {
-    max-width: 80%;
-    border: 5px solid red;
-}
 
 p {
     color: red;
+    font-weight: bold;
+}
+.range-input {
+    position: relative;
+}
+.custom-wrapper {
+    margin: 0;
+    width: 70%;
+    padding: 0px 25px 40px;
+    position: relative;
+    left: 63px;
+}
+#canva {
+    display: flex;
+    align-content: center;
+    max-width: 80%;
+    border: 5px solid red;
+}
+.range-input input {
+    position: absolute;
+    width: 20%;
+    height: 5px;
+    background: none;
+    top: 5px;
+    left: 50px;
+    cursor: pointer;
+}
+span {
+    font-size: large;
+    font-weight: bold;
+    color: rgb(0, 45, 243);
 }
