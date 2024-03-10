@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>#D Sphere</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+        <script src="script.js" type="module" defer></script>
+    </head>
+    <body>
+        <div id="content-wrapper">
+            <canvas id="canva" height="800" width="800"></canvas>
+            <div class="buttons">
+                <p>
+                    Rotation-X <button class="btn" data-state="-1">start</button>
+                </p>
+                <p>
+                    Rotation-Y <button class="btn" data-state="-1">start</button>
+                </p>
+                <p>
+                    Rotation-Z <button class="btn" data-state="-1">start</button>
+                </p>
+                <span>Scale</span> <input type="range" min="0" value="1" max="2" id="scale" step="0.1">
+            </div>    
+        </div>
+    </body>
+</html>

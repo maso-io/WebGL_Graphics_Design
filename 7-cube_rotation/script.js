@@ -129,6 +129,7 @@ function draw(){
     i = 0;
     for (let i = 0; i < 6; i++)
     {
+        // draw all 6-faces
          webgl.drawArrays(webgl.TRIANGLE_FAN, i * 4, 4);
     };
     
@@ -182,7 +183,7 @@ webgl.vertexAttribPointer(
     3,
     webgl.FLOAT,
     webgl.FALSE,
-    0 * 4,
+    3 * 4,
     0 * 4,
 );
 

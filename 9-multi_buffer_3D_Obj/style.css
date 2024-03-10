@@ -1,0 +1,47 @@
+body {
+    /*
+     * set default font to arial with sans-serif fallback
+     * remove default margin and padding
+     */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+#content-wrapper {
+    /* Makes the content wrapper a flex container */
+    display: flex; 
+    /* Arranges flex items vertically within the content wrapper. */
+    flex-direction: column;
+    /*Centers flex items horizontally within the content wrapper. */
+    align-items: center;
+    /* Centers flex items vertically within the content wrapper. */
+    justify-content: center;
+    /* Sets the height of the content wrapper to 100% of the viewport height. */
+    height: 100vh;
+}
+
+canvas {
+    border: 1px solid #333;
+}
+
+.buttons {
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+input[type="range"] {
+    /* Sets the width of range input elements to 100% to fill their container */
+    width: 100%;
+}
