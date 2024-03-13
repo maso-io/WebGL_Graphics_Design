@@ -146,16 +146,16 @@ webgl.useProgram(program);
 
 // generate points
 let i = 0;
-let dA = PI / 180;
-let dB = PI / 150;
-for (i = 0; i < 300; i++){
+let dA = 0;
+let dB = 0;
+for (i = 0; i < 1000; i++){
     // set x, y, z
     vertices.push(p * cos(dB) * cos(dA));
     vertices.push(p * cos(dB) * sin(dA));
     vertices.push(p * sin(dB));
     dA += (PI * Math.random());
     dB += (PI * Math.random());
-};
+}; 
 i = vertices.length;
 for (let j = 0; j < i; j++){
     let c = ranColor();

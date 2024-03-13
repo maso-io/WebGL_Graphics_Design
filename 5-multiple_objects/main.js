@@ -43,40 +43,67 @@ let pheta = Math.PI / 36;
 let dpheta = 0.15;
 let speedX = 0.01;
 let speedY = 0.003;
-let shift_A = [0.0, 0.0];
+let shift_A = [-0.20, 0.20];
 
 let sX = 0.021;
 let sY = -0.003;
-let shift_B = [0.0, 0.0];
+let shift_B = [0.20, -0.20];
 function draw()
 {
     webgl.clearColor(0.1, 0.85, 0.9, 1.0);
     webgl.clear(webgl.COLOR_BUFFER_BIT);
     
     if (start == 1) {
-        // calculate and set position for object 1
-        if (shift_A[0] <= -1 + 0.2 || shift_A[0] >= 1 - 0.2) {
-            speedX *= -1;
-            dpheta *= -1;
-        }
-        if (shift_A[1] <= -1 + 0.2 || shift_A[1] >= 1 - 0.2) {
-            speedY *= -1;
-        }
-        pheta += dpheta;
-        shift_A[0] += speedX;
-        shift_A[1] += speedY;
-
-        // calculate and set position for object 2
-        if (shift_B[0] <= -1 + 0.2 || shift_B[0] >= 1 - 0.2) {
+        // detect colision
+        if (abs(shift_A[0] - shift_B[0]) <= 0.4 &&
+            abs(shift_A[1] - shift_B[1] <= 0.2)){
             sX *= -1;
-        }
-        if (shift_B[1] <= -1 + 0.2 || shift_B[1] >= 1 - 0.2) {
+            speedX *= -1;
             sY *= -1;
+            speedY *= -1;
+
+            shift_B[0] += sX;
+            shift_A[0] += speedX;
+            shift_A[1] += speedY;
+            shift_B[1] += sY;
+
+        } else if (abs(shift_A[0] - shift_B[0]) <= 0.2 &&
+            abs(shift_A[1] - shift_B[1] <= 0.4)) {
+            sX *= -1;
+            speedX *= -1;
+            sY *= -1;
+            speedY *= -1;
+
+            shift_B[0] += sX;
+            shift_A[0] += speedX;
+            shift_A[1] += speedY;
+            shift_B[1] += sY;
         }
-        shift_B[0] += sX;
-        shift_B[1] += sY;
+        else {
+            // calculate and set position for object 1
+            if (shift_A[0] <= -1 + 0.2 || shift_A[0] >= 1 - 0.2) {
+                speedX *= -1;
+                dpheta *= -1;
+            }
+            if (shift_A[1] <= -1 + 0.2 || shift_A[1] >= 1 - 0.2) {
+                speedY *= -1;
+            }
+            pheta += dpheta;
+            shift_A[0] += speedX;
+            shift_A[1] += speedY;
+
+            // calculate and set position for object 2
+            if (shift_B[0] <= -1 + 0.2 || shift_B[0] >= 1 - 0.2) {
+                sX *= -1;
+            }
+            if (shift_B[1] <= -1 + 0.2 || shift_B[1] >= 1 - 0.2) {
+                sY *= -1;
+            }
+            shift_B[0] += sX;
+            shift_B[1] += sY;        
+        }
     }
-    // detect colision
+
 
     // update positions for objects and draw
     webgl.uniform2f(p_info.shift, shift_A[0], shift_A[1]);
@@ -124,6 +151,7 @@ void main()
 {
     gl_FragColor = vec4(0.65, 0.35, 0.10, 1.0); 
 }`
+const abs = Math.abs;
 // start main program
 const canvas = document.getElementById(`webgl`);
 const webgl = canvas.getContext(`webgl`);
@@ -178,12 +206,12 @@ webgl.vertexAttribPointer(
     2 * Float32Array.BYTES_PER_ELEMENT,
     0
 );
-const num_v = vertices.length / 4;  // total number of vertices per object
+const num_v = vertices.length / 4;  // total number of vertices per object [for 2 objects]
 
 
 // start animation rotation
+webgl.uniform2f(p_info.shift, shift_A[0], shift_A[1]);
+webgl.drawArrays(webgl.LINE_LOOP, 0, num_v);
+webgl.uniform2f(p_info.shift, shift_B[0], shift_B[1]);
+webgl.drawArrays(webgl.TRIANGLE_FAN, num_v, num_v);
 draw();
-
-// testing matrices
-const modelMatrix = mat4.create(); // Creates an identity matrix
-console.log(modelMatrix);
