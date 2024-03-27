@@ -206,6 +206,5 @@ webgl.uniformMatrix4fv(
     webgl.FALSE,
     idMatrix
 );
-
 // start drawing
 draw();
