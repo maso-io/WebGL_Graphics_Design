@@ -1,0 +1,28 @@
+Stone Rush
+
+How the game works:
+
+1. Use the arrow keys or a,d,w,s to move in the left, right, up and down.
+2. Progress from left-to-right and duck the rocks and level up.
+3. The higher the level goes the more rocks are put into the game.
+
+Functions:
+Code contains two main objects:
+1. Box object which makes up the "enemy" objects/rocks
+2. Plane object which is controlled by the user to avoid collision with the rocks.
+
+An "enemy" object has the following properties:
+1. static values: velX and velY to control the velocity of the enemy in the x and y direction
+2. static gameStatus: which tracks the current status of the game. whether its over or not
+3. an ID which tracks the enemy ID 
+4. draw method: which draws and textures the object
+5. update method: which moves the object according to it's ID
+6. source attribute with links to the object texutre
+
+A Plane object
+It is an extention of the Box/enemy object
+The object contains:
+1. static velX and velY to control the velocity of the plane in the xy plane
+2. source attribute with links to the object texutre
+3. update method: moves the object according to the controls of the user
+4. collision detection method: checks if the plane has collided with any of the objects if it has its game over

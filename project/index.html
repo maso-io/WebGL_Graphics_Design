@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stone RÜSH</title>
+    <script src="main.js" type="module" defer></script>
+    <script src="sources/sources.js" type="module" defer></script>
+    <script src="/functionality/objects.js" type="module" defer></script>
+    <script src="functionality/build.js" type="module" defer></script>
+    <link rel="stylesheet" href="style.css">
+    <img src="./assets/art/Silvara_norings.png" alt="comet_sprite" id="texImage" style="display: none;" />
+    <img src="./assets/art/plane.png" alt="plane" id="texImage" style="display: none;" />
+    <audio id="intro" src="./assets/sound/title_screen.wav"></audio>
+    <audio id="main" src="./assets/sound/main_play.wav"></audio>
+    <audio id="ending" src="./assets/sound/ending.wav"></audio>
+</head>
+<body>
+    <div id="content-wrapper">
+        <h3 class="start">Welcome To</h3>
+        <h2 class="start" id="game-start">STONE RÜSH</h2>
+        <canvas width="950" height="850" id="canva" style="display: none;"></canvas>
+        <p id="score" style="display: none;">score:</p>
+        <h2 style="display: none;" id="game-over">Game Over</h2>
+        <button class="start-button" data-state="-1">Start Game</button>
+    </div>
+</body>
+</html>

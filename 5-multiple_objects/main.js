@@ -206,12 +206,14 @@ webgl.vertexAttribPointer(
     2 * Float32Array.BYTES_PER_ELEMENT,
     0
 );
+//webgl.vertexAttribPointer()
 const num_v = vertices.length / 4;  // total number of vertices per object [for 2 objects]
 
 
 // start animation rotation
 webgl.uniform2f(p_info.shift, shift_A[0], shift_A[1]);
 webgl.drawArrays(webgl.LINE_LOOP, 0, num_v);
+//webgl.drawArrays()
 webgl.uniform2f(p_info.shift, shift_B[0], shift_B[1]);
 webgl.drawArrays(webgl.TRIANGLE_FAN, num_v, num_v);
 draw();

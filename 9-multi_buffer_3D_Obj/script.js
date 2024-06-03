@@ -1,8 +1,29 @@
+import { vsSource, fsSource, vertices, colors, p } from "./sources.js";
+import { idMatrix, scaleMatrix, rotX, rotY, rotZ } from "./rotation.js";
+
+const src = [`./vSource.glsl`, `./fSource.glsl`];
+const shaderSources = [];
+async function load(src) {
+    const res = await fetch(src);
+    const resTXT = await res.text();
+    return (resTXT);
+}
+
+function getSource() {
+    src.forEach((element) => {
+        load(element).then((output) => { 
+            shaderSources.push(output);
+        });
+    });
+}
+getSource();
+console.log(shaderSources);
+
+
 // Set constants
 const sin = Math.sin;
 const cos = Math.cos;
 const PI = Math.PI;
-
 
 function initShader(vsSource, fsSource) {
     /**
@@ -74,7 +95,7 @@ function ranColor() {
 const buttons = document.querySelectorAll(`.btn`);
 const scaleSlider = document.querySelector(`#scale`);
 
-buttons.forEach((btn) => { 
+buttons.forEach((btn) => {
     btn.addEventListener("click", () => {
         // change state and text-content
         const state = btn.getAttribute(`data-state`);
@@ -91,7 +112,7 @@ function draw() {
 
     let rot_x, rot_y, rot_z;
     const points = vertices.length / 3;
-    
+
     rot_x = rotX(phi);
     rot_y = rotY(phi);
     rot_z = rotZ(phi);
@@ -131,9 +152,6 @@ function draw() {
     requestAnimationFrame(draw);
 }
 // main programs
-import { vsSource, fsSource, vertices, colors, p } from "./sources.js";
-import { idMatrix, scaleMatrix, rotX, rotY, rotZ } from "./rotation.js";
-
 const canvas = document.querySelector(`#canva`);
 const webgl = canvas.getContext(`webgl`);
 if (!webgl) {
@@ -148,16 +166,18 @@ webgl.useProgram(program);
 let i = 0;
 let dA = 0;
 let dB = 0;
-for (i = 0; i < 1000; i++){
+for (i = 0; i < 1000; i++) {
     // set x, y, z
     vertices.push(p * cos(dB) * cos(dA));
     vertices.push(p * cos(dB) * sin(dA));
     vertices.push(p * sin(dB));
     dA += (PI * Math.random());
     dB += (PI * Math.random());
-}; 
+    // dA += PI / 180;
+    // dB += PI / 180;
+};
 i = vertices.length;
-for (let j = 0; j < i; j++){
+for (let j = 0; j < i; j++) {
     let c = ranColor();
     colors.push(c[0]);
     colors.push(c[1]);
